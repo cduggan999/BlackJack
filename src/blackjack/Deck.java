@@ -2,7 +2,7 @@ package blackjack;
 
 import java.util.Collections;
 import java.util.Stack;
-import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class Deck {
 	
@@ -15,7 +15,7 @@ public class Deck {
 	// Used to record whether the hand wins, loses or draws(push)
 	private Result result = null; 
 	private boolean endTurn = false; 
-	private DecimalFormat df2 = new DecimalFormat("#.##");
+	private NumberFormat df2 = NumberFormat.getCurrencyInstance();
 	
 	public Deck(String name){
 		this.deckOfCards = new Stack<Card>();
@@ -132,7 +132,7 @@ public class Deck {
 		else if (this.result == Result.Lose) {
 			return "\n" + this.name + " Lost! Dealer Wins this Hand!";
 		}
-		else if (this.result == Result.Win) {
+		else if (this.result == Result.Win) {	
 			return "\n" + this.name + " won " + df2.format(getBet()).toString() + "!";
 		}
 		else if (this.result == Result.Push) {

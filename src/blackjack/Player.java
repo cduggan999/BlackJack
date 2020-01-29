@@ -43,7 +43,7 @@ public class Player {
 			this.endRound = false;
 			return this.endRound; 
 		}	
-		if (this.splitHands != null) {
+		if (this.splitHands.empty() == false) {
 			for(Deck currentDeck : this.splitHands) {
 				// Check statuses of all split hands
 				if (currentDeck.getEndTurn() == false) {
@@ -70,7 +70,7 @@ public class Player {
 		// Return Cards from main hand
 		deckReceive.emptyFromDeck(this.playersHand);
 		// Return cards from any split hands
-		if (this.splitHands != null) {
+		if (this.splitHands.empty() == false) {
 			for(Deck currentDeck : this.splitHands) {
 				// Check statuses of all split hands
 				if (currentDeck.getDeckSize() > 0) {
@@ -102,7 +102,7 @@ public class Player {
 	}
 
 	public void displaySplitHands() {
-		if (this.splitHands != null) {
+		if (this.splitHands.empty() == false) {
 			for(Deck currentDeck : this.splitHands) {
 				// Check statuses of all split hands
 				if (currentDeck.getDeckSize() > 0) {
@@ -203,7 +203,7 @@ public class Player {
 		if (currValue < 21) {
 			highest = this.playersHand.getHandValue();
 		}
-		if (this.splitHands != null) {
+		if (this.splitHands.empty() == false) {
 			for(Deck currentDeck : this.splitHands) {
 				currValue = currentDeck.getHandValue();
 				if (currValue > highest && currValue < 21) {
@@ -218,7 +218,7 @@ public class Player {
 		// Prints the Results of your main hands
 		displayHandResult(this.playersHand, dealersHand);	
 		// Prints the Results of the split hands
-		if (this.splitHands != null) {
+		if (this.splitHands.empty() == false) {
 			for(Deck currentDeck : this.splitHands) {
 				displayHandResult(currentDeck, dealersHand);		
 			}
@@ -229,7 +229,7 @@ public class Player {
 		// Compare main players hand to dealer hand
 		determineHandResult(playersHand, dealersHand);
 		// Compares each split hand to dealer hand
-		if (this.splitHands != null) {
+		if (this.splitHands.empty() == false) {
 			for(Deck currentDeck : this.splitHands) {
 				// Skip function call if Hand is already Bust
 				if (currentDeck.getResult() != Result.Bust) {
@@ -283,5 +283,8 @@ public class Player {
 		this.endRound = false;
 		this.playersHand.setEndTurn(false);
 		this.splitHandCount = 0;
+		if (this.splitHands.empty() == false) {
+			this.splitHands.clear();
+		}
 	}
 }

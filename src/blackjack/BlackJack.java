@@ -1,12 +1,12 @@
 package blackjack;
 
 import java.util.Scanner;
-import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class BlackJack {
 	
 	private static int BLACKJACK = 21;
-	private static DecimalFormat df2 = new DecimalFormat("#.##");
+	private static NumberFormat df2 = NumberFormat.getCurrencyInstance();
 	private static double bet;
 	private static double balance;
 	
@@ -18,6 +18,8 @@ public class BlackJack {
 		System.out.println("-------------------------------------------------------"); 
         System.out.println("-              Welcome to BLACK JACK                  -");
         System.out.println("-------------------------------------------------------"); 
+        
+      //  NumberFormat df2 = NumberFormat.getCurrencyInstance();
 
         // Main deck where both dealers and players card are drawn from
 		Deck deck = new Deck("Main Deck");
