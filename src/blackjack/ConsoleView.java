@@ -3,6 +3,12 @@ package blackjack;
 import java.text.NumberFormat;
 import java.util.Scanner;
 
+/**
+ * Console window.
+ * Holds the print to console functions.
+ * Putting all the output messages in one class should make it easier to replace with a GUI later if needed.
+ */
+
 public final class ConsoleView {
 	
 	private static NumberFormat df2 = NumberFormat.getCurrencyInstance();
