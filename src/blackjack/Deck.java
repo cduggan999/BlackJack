@@ -99,7 +99,7 @@ public class Deck {
 	}
 	public void displayHand() {
 		for (int i = 0; i < getDeckSize(); i++) {
-			System.out.println(getCard(i).cardAsString());
+			ConsoleView.displayCard(getCard(i));
 		}
 	}
 	public Card getLastCard() {

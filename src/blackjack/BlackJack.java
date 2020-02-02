@@ -1,21 +1,14 @@
 package blackjack;
 
-import java.util.Scanner;
-import java.text.NumberFormat;
-
 public class BlackJack {
 	
 	private static int BLACKJACK = 21;
-	private static NumberFormat df2 = NumberFormat.getCurrencyInstance();
 	private static double bet;
-	private static double balance;
 	
 	public static void main(String[] args) {
 
 		// Welcome to BlackJack message
-		System.out.println("-------------------------------------------------------"); 
-        System.out.println("-              Welcome to BLACK JACK                  -");
-        System.out.println("-------------------------------------------------------"); 
+		ConsoleView.welcome();
 
         // Main deck where both dealers and players card are drawn from
 		Deck deck = new Deck("Main Deck");
@@ -26,7 +19,7 @@ public class BlackJack {
 		
 		// Create player and initialise starting balance
 		Player player = new Player(100);	
-		Scanner input = new Scanner(System.in);
+		//Scanner input = new Scanner(System.in);
 
 		// Continue to loop as long as player has money
 		while(player.getBalance() > 0) {	
@@ -35,11 +28,11 @@ public class BlackJack {
 			// Randomise the order of the cards
 			deck.shuffleCards();
 			
-			balance = player.getBalance();
-			System.out.println("\nYour Balance: " + df2.format(balance));
+			//System.out.println("\nYour Balance: " + df2.format(balance));
+			ConsoleView.displayBalance(player.getBalance());
 			// Players Bet
-			System.out.println("\nEnter the amount you wish to bet:");
-			bet = input.nextDouble();					
+			bet = ConsoleView.enterBet();
+		//	bet = input.nextDouble();					
 			player.makeBet(bet);
 
 			// Deal the player 2 cards
@@ -51,18 +44,17 @@ public class BlackJack {
 			
 			if (player.getPlayerHand().getHandValue() == BLACKJACK) {
 				player.getPlayerHand().displayHand();
-				System.out.println("\nBlack Jack! Congratulations!");
+				ConsoleView.blackJackMessage(bet);
 				// BlackJack payout is 3:2
-				System.out.println("You won " + (bet * 3 / 2));
-				player.setBalance(balance + (bet * 5/2));
+				player.setBalance(player.getBalance() + (bet * 5/2));
 			}
 			else {
+				
 				// Keeps looping until all player decisions are competed
-				player.decisionLoop(player.getPlayerHand(), player, deck, dealersHand.getCard(0).cardAsString(), input);
+				player.decisionLoop(player.getPlayerHand(), player, deck, dealersHand.getCard(0).cardAsString(), ConsoleView.getInput());
 		
 				// Display Dealers full hand
-				System.out.println("\nDealers Hand:");
-				dealersHand.displayHand();
+				ConsoleView.displayDealersFullHand(dealersHand);
 				
 				boolean endRound = player.getEndRound();
 				int dealerHandValue = dealersHand.getHandValue();
@@ -70,14 +62,16 @@ public class BlackJack {
 				
 				// Dealer continues to draw until they have a total of 17 or higher unless dealer already has highest score
 				if (endRound == false && dealerHandValue <= highestPlrScore){		
-					while((dealersHand.getHandValue() < 17)) {
+					while((dealersHand.getHandValue() < 17 || dealerHandValue < highestPlrScore)) {
 						dealersHand.addCard(deck.dealCard());
-						System.out.println("\nDealer drew a " + dealersHand.getLastCard().cardAsString());
+						// Displays the card the dealer drew
+						ConsoleView.displayDealersCardDrawn(dealersHand.getLastCard());
+						// Update the dealers hand value
+						dealerHandValue = dealersHand.getHandValue();
 					}			
 					// Check if Dealer Bust
 					if (dealersHand.getHandValue() > BLACKJACK && endRound == false) {
-						//resultMessage = "\nDealer BUST! You WIN";	
-						System.out.println("\nDealer Bust!");
+						ConsoleView.DealerBustMessage();
 					}	
 				}
 				
@@ -90,11 +84,12 @@ public class BlackJack {
 			deck.emptyFromDeck(dealersHand);
 			player.playerReset();
 			
-			System.out.println("-------------------------------------------------------"); 
-			input.nextLine();
+			// Advances this scanner past the current line
+			ConsoleView.nextLine();
 		}		
 		// Game Over
-		System.out.println("Game Over!");
+		ConsoleView.GameOverMessage();
+		//System.out.println("Game Over!");
 	}
 }
 

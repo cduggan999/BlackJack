@@ -6,7 +6,6 @@ import java.util.Stack;
 public class Player {
 	
 	private double balance = 0.00;
-	private double bet = 0.00;
 	private boolean endRound = false;
 	private int BLACKJACK = 21;
 	private int splitHandCount = 0;
@@ -39,15 +38,16 @@ public class Player {
 	}
 	
 	public boolean getEndRound() {
-		//Check the status of all players hand to determine endRound status
-		if (playersHand.getEndTurn() == false) { 
+		// Check the status of all players hand to determine endRound status
+		// Not the end of round if any hand is under 21 as the dealer still has decision to make
+		if (playersHand.getEndTurn() == false || (playersHand.getHandValue() < 21)) { 
 			this.endRound = false;
 			return this.endRound; 
 		}	
 		if (this.splitHands.empty() == false) {
 			for(Deck currentDeck : this.splitHands) {
 				// Check statuses of all split hands
-				if (currentDeck.getEndTurn() == false) {
+				if (currentDeck.getEndTurn() == false || currentDeck.getHandValue() < 21) {
 					this.endRound = false;
 					return this.endRound; 
 				}		
@@ -217,13 +217,14 @@ public class Player {
 	
 	public void displayResults(Deck dealersHand) {
 		// Prints the Results of your main hands
-		displayHandResult(this.playersHand, dealersHand);	
+		ConsoleView.displayHandResult(this.playersHand, dealersHand);	
 		// Prints the Results of the split hands
 		if (this.splitHands.empty() == false) {
 			for(Deck currentDeck : this.splitHands) {
-				displayHandResult(currentDeck, dealersHand);		
+				ConsoleView.displayHandResult(currentDeck, dealersHand);		
 			}
 		}
+		System.out.println("-------------------------------------------------------"); 
 	}
 	
 	public void determineWinners(Deck dealersHand) {
@@ -257,7 +258,7 @@ public class Player {
 		} 
 		else {
 			// Bet whatever balance we have remaining
-			System.out.println("\nInsufficient balance, betting " + this.balance + " instead!");
+			ConsoleView.insufficientBalance(this.balance);
 			setBet(getBalance());
 			setBalance(0.00);
 		}
@@ -296,11 +297,4 @@ public class Player {
 			this.balance += playersHand.getBet();
 		}
 	}
-	
-	private void displayHandResult(Deck playerHand, Deck dealersHand) {
-		System.out.println("\n[" + playerHand.getName() + " Score: " + playerHand.getHandValue() + "]");
-		System.out.println("[Dealer HandScore: " + dealersHand.getHandValue() + "]");
-		System.out.println(playerHand.getResultMesage());
-	}	
-	
 }
