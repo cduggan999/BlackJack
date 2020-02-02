@@ -6,6 +6,7 @@ import java.util.Stack;
 public class Player {
 	
 	private double balance = 0.00;
+	private double bet = 0.00;
 	private boolean endRound = false;
 	private int BLACKJACK = 21;
 	private int splitHandCount = 0;
@@ -239,6 +240,29 @@ public class Player {
 		}
 	}
 	
+	public void playerReset() {
+		this.endRound = false;
+		this.playersHand.setEndTurn(false);
+		this.splitHandCount = 0;
+		if (this.splitHands.empty() == false) {
+			this.splitHands.clear();
+		}
+	}
+
+	public void makeBet(double bet) {
+		// Checks player has enough to cover bet
+		if (this.balance >= bet) {
+			setBalance(getBalance() - bet);
+			setBet(bet);
+		} 
+		else {
+			// Bet whatever balance we have remaining
+			System.out.println("\nInsufficient balance, betting " + this.balance + " instead!");
+			setBet(getBalance());
+			setBalance(0.00);
+		}
+	}
+
 	private void determineHandResult(Deck playersHand, Deck dealersHand) {
 		// Player has BlackJack
 		if (playersHand.getHandValue() == BLACKJACK) {
@@ -277,14 +301,6 @@ public class Player {
 		System.out.println("\n[" + playerHand.getName() + " Score: " + playerHand.getHandValue() + "]");
 		System.out.println("[Dealer HandScore: " + dealersHand.getHandValue() + "]");
 		System.out.println(playerHand.getResultMesage());
-	}
+	}	
 	
-	public void playerReset() {
-		this.endRound = false;
-		this.playersHand.setEndTurn(false);
-		this.splitHandCount = 0;
-		if (this.splitHands.empty() == false) {
-			this.splitHands.clear();
-		}
-	}
 }

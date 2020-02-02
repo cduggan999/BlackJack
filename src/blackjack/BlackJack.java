@@ -12,14 +12,10 @@ public class BlackJack {
 	
 	public static void main(String[] args) {
 
-		//double bet;
-
 		// Welcome to BlackJack message
 		System.out.println("-------------------------------------------------------"); 
         System.out.println("-              Welcome to BLACK JACK                  -");
         System.out.println("-------------------------------------------------------"); 
-        
-      //  NumberFormat df2 = NumberFormat.getCurrencyInstance();
 
         // Main deck where both dealers and players card are drawn from
 		Deck deck = new Deck("Main Deck");
@@ -43,21 +39,9 @@ public class BlackJack {
 			System.out.println("\nYour Balance: " + df2.format(balance));
 			// Players Bet
 			System.out.println("\nEnter the amount you wish to bet:");
-			bet = input.nextDouble();
-			
-			
-			// Checks player has enough to cover bet
-			if (balance >= bet) {
-				balance -= bet;
-				player.setBalance(balance);
-				player.setBet(bet);
-			} 
-			else {
-				System.out.println("\nInsufficient balance, betting " + balance + " instead!");
-				player.setBet(balance);
-				balance = 0;
-				player.setBalance(balance);
-			}
+			bet = input.nextDouble();					
+			player.makeBet(bet);
+
 			// Deal the player 2 cards
 			player.addCardMainHand(deck);
 			player.addCardMainHand(deck);
